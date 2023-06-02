@@ -263,7 +263,7 @@ source_install_llvm() {
 		CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" \
                 ./configure --enable-optimized --disable-assertions \
                     --enable-targets=host --with-python='/usr/bin/python'
-		REQUIRES_RTTI=1 make -j$(nproc)
+		REQUIRES_RTTI=1 make $(nproc)
 	fi
 	echo "Done."
 }
