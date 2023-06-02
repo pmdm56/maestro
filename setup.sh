@@ -379,7 +379,7 @@ source_install_rs3() {
 	echo "Installing RS3..."
 	package_install libsctp-dev
 	if [ ! -e "$BUILD_DIR/libr3s" ]; then
-		git clone --depth 1 https://github.com/pmdm56/libr3s.git "$BUILD_DIR/libr3s"
+		git clone --depth 1 https://github.com/fchamicapereira/libr3s.git "$BUILD_DIR/libr3s"
 		pushd "$BUILD_DIR/libr3s"
 			rm -rf build
 			mkdir build
