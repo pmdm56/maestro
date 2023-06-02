@@ -192,7 +192,7 @@ source_install_dpdk() {
 
 		# Compile
 		make config T=x86_64-native-linuxapp-gcc MAKE_PAUSE=n
-		make install -j T=x86_64-native-linuxapp-gcc MAKE_PAUSE=n DESTDIR=.
+		make install T=x86_64-native-linuxapp-gcc MAKE_PAUSE=n DESTDIR=.
 
 		echo "$DPDK_RELEASE" > .version
 	fi
