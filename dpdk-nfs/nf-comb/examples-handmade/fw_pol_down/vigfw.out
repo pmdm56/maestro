@@ -1,0 +1,44 @@
+==7259== Memcheck, a memory error detector
+==7259== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==7259== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==7259== Command: ./build/app/nf --vdev net_tap0,iface=test_lan --vdev net_tap1,iface=test_wan --no-huge --no-shconf -- --wan 1 --expire 100000000 --max-flows 65536 --eth-dest 0,02:4A:05:36:45:51 --eth-dest 1,04:2D:27:1F:05:D1 --lan 0 --rate 12500 --burst 500000 --capacity 65536
+==7259== 
+vex amd64->IR: unhandled instruction bytes: 0xF 0xC7 0xF8 0x89 0x84 0x24 0xD0 0x0 0x0 0x0
+vex amd64->IR:   REX=0 REX.W=0 REX.R=0 REX.X=0 REX.B=0
+vex amd64->IR:   VEX=0 VEX.L=0 VEX.nVVVV=0x0 ESC=0F
+vex amd64->IR:   PFX.66=0 PFX.F2=0 PFX.F3=0
+==7259== valgrind: Unrecognised instruction at address 0x3689c6.
+==7259==    at 0x3689C6: rte_rand_init (in /shared/maestro/dpdk-nfs/nf-comb/examples-handmade/fw_pol/build/app/nf)
+==7259==    by 0xACDCBC: __libc_csu_init (in /shared/maestro/dpdk-nfs/nf-comb/examples-handmade/fw_pol/build/app/nf)
+==7259==    by 0x49FC00F: (below main) (libc-start.c:264)
+==7259== Your program just tried to execute an instruction that Valgrind
+==7259== did not recognise.  There are two possible reasons for this.
+==7259== 1. Your program has a bug and erroneously jumped to a non-code
+==7259==    location.  If you are running Memcheck and you just saw a
+==7259==    warning about a bad jump, it's probably your program's fault.
+==7259== 2. The instruction is legitimate but Valgrind doesn't handle it,
+==7259==    i.e. it's Valgrind's fault.  If you think this is the case or
+==7259==    you are not sure, please let us know and we'll try to fix it.
+==7259== Either way, Valgrind will now raise a SIGILL signal which will
+==7259== probably kill your program.
+==7259== 
+==7259== Process terminating with default action of signal 4 (SIGILL): dumping core
+==7259==  Illegal opcode at address 0x3689C6
+==7259==    at 0x3689C6: rte_rand_init (in /shared/maestro/dpdk-nfs/nf-comb/examples-handmade/fw_pol/build/app/nf)
+==7259==    by 0xACDCBC: __libc_csu_init (in /shared/maestro/dpdk-nfs/nf-comb/examples-handmade/fw_pol/build/app/nf)
+==7259==    by 0x49FC00F: (below main) (libc-start.c:264)
+==7259== 
+==7259== HEAP SUMMARY:
+==7259==     in use at exit: 55,116 bytes in 170 blocks
+==7259==   total heap usage: 196 allocs, 26 frees, 136,314 bytes allocated
+==7259== 
+==7259== LEAK SUMMARY:
+==7259==    definitely lost: 0 bytes in 0 blocks
+==7259==    indirectly lost: 0 bytes in 0 blocks
+==7259==      possibly lost: 0 bytes in 0 blocks
+==7259==    still reachable: 55,116 bytes in 170 blocks
+==7259==         suppressed: 0 bytes in 0 blocks
+==7259== Rerun with --leak-check=full to see details of leaked memory
+==7259== 
+==7259== For lists of detected and suppressed errors, rerun with: -s
+==7259== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

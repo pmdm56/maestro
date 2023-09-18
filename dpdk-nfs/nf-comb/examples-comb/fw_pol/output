@@ -1,0 +1,14 @@
+Configuration: configs/config_bdd1.json
+Graphviz: enabled
+BDD1 color: #ff0000
+BDD2 color: #c0ff14
+Prior changes: BDD2
+[Conflict matrix] 
+              ------- BDD2 --------
+      actions | fwd | drop | bcast |
+        fwd   |  0     0      0
+BDD1    drop  |  0     -1     0
+        bcast |  0     0     -1
+
+KLEE: Using Z3 solver backend
+Merge complete. Check examples-comb/fw_pol/nf.bdd and examples-comb/fw_pol/nf.gv 
