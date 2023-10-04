@@ -1,6 +1,6 @@
 NF_FILES := main.c nf_config.c state.c utils.c
 
-NF_ARGS := --lan 1 \
+NF_ARGS := --lan 0 \
            --rate $(or $(POLICER_RATE),1000000000) \
            --burst $(or $(POLICER_BURST),10000000000) \
            --capacity $(or $(CAPACITY),65536) \

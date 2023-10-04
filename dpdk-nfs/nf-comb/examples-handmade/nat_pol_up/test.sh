@@ -36,6 +36,8 @@ function test_nop {
         --eth-dest 1,$MAC_2 \
         --expire 100000000 \
         --max-flows 65536 \
+        --extip "10.0.0.7" \
+        --starting-port 0 \
         & NF_PID=$!
 
   while [ ! -f /sys/class/net/test_lan/tun_flags -o \
@@ -84,7 +86,7 @@ function test_nop {
   #test known flow between client and external server
   sudo ip netns exec wan iperf -us -i 1 &
   SERVER_PID=$!
-  sudo ip netns exec lan iperf -uc 10.0.0.2 -t 1 >/dev/null
+  sudo ip netns exec lan iperf -uc 10.0.0.2 -t 10 >/dev/null
 
   sudo killall iperf
   wait $SERVER_PID 2>/dev/null || true

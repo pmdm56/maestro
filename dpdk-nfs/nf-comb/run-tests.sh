@@ -1,12 +1,10 @@
 #!/bin/bash
 
 combinations=(
-  "fwd_nf drop_nf config_bdd1.json"
-  "fwd_nf drop_nf config_bdd2.json"
-  "fwd_nf drop_nf"
-  "fwd_nf drop_nf config_mixed.json"
-  "fwd_nf bcast_nf config_mixed.json"
-  "drop_nf bcast_nf config_mixed.json"
+  "fw_wan_1 pol_wan_0_lan_1 config_mixed.json"
+  "fw_wan_1 pol_wan_1_lan_0 config_mixed.json"
+  "nat_wan_1 pol_wan_0_lan_1 config_mixed.json"
+  "nat_wan_1 pol_wan_1_lan_0 config_mixed.json"
   # Add more combinations here as needed
 )
 
@@ -62,22 +60,7 @@ run_combination() {
     mkdir -p "$output_dir"
 
     echo "Running combination of '$bdd1' and '$bdd2' using config file '$config_file'..."
-
-    if [ -n "$config_file" ]; then
-        nf-comb -bdd1 "$bdd1_dir/nf.bdd" -bdd2 "$bdd2_dir/nf.bdd" -config "$config_dir/$config_file" -out "$output_dir/nf" > "$output_dir/output" 2>&1
-    else 
-        nf-comb -bdd1 "$bdd1_dir/nf.bdd" -bdd2 "$bdd2_dir/nf.bdd" -out "$output_dir/nf" > "$output_dir/output" 2>&1
-    fi
-
-    if [ -f "$output_dir/nf.bdd" ]; then 
-      echo "Synthesizing code on ${output_dir}"
-      bdd-to-c -in "$output_dir/nf.bdd" -out "$output_dir/comb.c" -target seq > /dev/null 2>&1
-
-      #bundle code
-      ./../synthesized/tools/build.py "$output_dir/comb.c" sequential "$output_dir" > /dev/null 2>&1
-      mv ../synthesized/build "$output_dir/build"
-      
-    fi
+    ./merge-nfs.sh $bdd1_dir $bdd2_dir $output_dir "$config_dir/$config_file"
 
   done
 }
@@ -96,6 +79,6 @@ build_examples() {
 
 cleanup_examples_comb
 #build_examples
-#run_combination "${combinations[@]}"
+run_combination "${combinations[@]}"
 
 #echo "Complete!"

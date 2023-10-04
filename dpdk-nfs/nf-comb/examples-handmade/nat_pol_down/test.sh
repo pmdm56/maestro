@@ -36,7 +36,7 @@ function test_nop {
         --eth-dest 1,$MAC_2 \
         --expire 100000000 \
         --max-flows 65536 \
-        --extip "10.0.0.2" \
+        --extip "10.0.0.7" \
         --starting-port 0 \
         & NF_PID=$!
 

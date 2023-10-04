@@ -27,7 +27,7 @@ function test_policer {
         --rate $RATE \
         --burst $BURST \
         --capacity 65536 \
-        >/dev/null 2>/dev/null &
+         &
   NF_PID=$!
 
   while [ ! -f /sys/class/net/test_lan/tun_flags -o \

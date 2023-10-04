@@ -84,7 +84,7 @@ function test_nop {
   #test known flow between client and external server
   sudo ip netns exec wan iperf -us -i 1 &
   SERVER_PID=$!
-  sudo ip netns exec lan iperf -uc 10.0.0.2 -t 1 >/dev/null
+  sudo ip netns exec lan iperf -uc 10.0.0.2 -t 10 >/dev/null
 
   sudo killall iperf
   wait $SERVER_PID 2>/dev/null || true

@@ -17,7 +17,6 @@ bool nf_init(void) {
   unsigned capacity = config.dyn_capacity;
   dynamic_ft = alloc_state_pol(capacity, rte_eth_dev_count_avail());
   return flow_manager != NULL AND dynamic_ft != NULL;
-  return true;
 }
 
 int nf_process(uint16_t device, uint8_t **buffer, uint16_t packet_length,

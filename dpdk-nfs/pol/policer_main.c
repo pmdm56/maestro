@@ -46,6 +46,7 @@ bool policer_check_tb(uint32_t dst, uint16_t size, vigor_time_t time) {
     assert(value->bucket_time >= 0);
     assert(value->bucket_time <= time_u);
     uint64_t time_diff = time_u - value->bucket_time;
+    printf("time_u->%ld, value->bucket_time->%ld\n", time_u, value->bucket_time);
     if (time_diff <
         config.burst * VIGOR_TIME_SECONDS_MULTIPLIER / config.rate) {
       uint64_t added_tokens =
@@ -65,6 +66,7 @@ bool policer_check_tb(uint32_t dst, uint16_t size, vigor_time_t time) {
     value->bucket_time = time_u;
 
     bool fwd = false;
+    NF_INFO("value->bucket_size(%d) > size(%d)?", value->bucket_size, size);
     if (value->bucket_size > size) {
       value->bucket_size -= size;
       fwd = true;
