@@ -1081,11 +1081,11 @@ int nf_process(uint16_t device, uint8_t *buffer, uint16_t packet_length,
 #define VIGOR_BATCH_SIZE 32
 
 // Do the opposite: we want batching!
-static const uint16_t RX_QUEUE_SIZE = 256;
-static const uint16_t TX_QUEUE_SIZE = 256;
+static const uint16_t RX_QUEUE_SIZE = 1024;
+static const uint16_t TX_QUEUE_SIZE = 1024;
 
 // Buffer count for mempools
-static const unsigned MEMPOOL_BUFFER_COUNT = 512;
+static const unsigned MEMPOOL_BUFFER_COUNT = 2048;
 
 // Send the given packet to all devices except the packet's own
 void flood(struct rte_mbuf *packet, uint16_t nb_devices) {
@@ -1240,13 +1240,6 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-struct DynamicValue {
-  uint64_t bucket_size;
-  int64_t bucket_time;
-};
-struct ip_addr {
-  uint32_t addr;
-};
 struct FlowId {
   uint16_t src_port;
   uint16_t dst_port;
@@ -1254,6 +1247,13 @@ struct FlowId {
   uint32_t dst_ip;
   uint16_t internal_device;
   uint8_t protocol;
+};
+struct ip_addr {
+  uint32_t addr;
+};
+struct DynamicValue {
+  uint64_t bucket_size;
+  int64_t bucket_time;
 };
 uint32_t FlowId_hash(void* obj) {
   struct FlowId* id = (struct FlowId*) obj;
@@ -1298,6 +1298,16 @@ void DynamicValue_allocate(void* obj) {
   id->bucket_time = 0;
 
 }
+uint32_t ip_addr_hash(void* obj) {
+  struct ip_addr* id = (struct ip_addr*) obj;
+
+
+
+
+  unsigned hash = 0;
+  hash = __builtin_ia32_crc32si(hash, id->addr);
+  return hash;
+}
 bool FlowId_eq(void* a, void* b) {
   struct FlowId* id1 = (struct FlowId*) a;
   struct FlowId* id2 = (struct FlowId*) b;
@@ -1312,16 +1322,6 @@ bool FlowId_eq(void* a, void* b) {
 
 
 
-}
-uint32_t ip_addr_hash(void* obj) {
-  struct ip_addr* id = (struct ip_addr*) obj;
-
-
-
-
-  unsigned hash = 0;
-  hash = __builtin_ia32_crc32si(hash, id->addr);
-  return hash;
 }
 void ip_addr_allocate(void* obj) {
 

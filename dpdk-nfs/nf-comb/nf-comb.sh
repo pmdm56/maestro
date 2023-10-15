@@ -1,3 +1,5 @@
+SCRIPT_DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
+
 check_folder() {
   if [ ! -d "$1" ]; then
     echo "Error: Folder $1 does not exist."

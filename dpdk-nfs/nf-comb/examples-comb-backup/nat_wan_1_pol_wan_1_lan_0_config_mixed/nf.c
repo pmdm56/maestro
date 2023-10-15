@@ -1081,11 +1081,11 @@ int nf_process(uint16_t device, uint8_t *buffer, uint16_t packet_length,
 #define VIGOR_BATCH_SIZE 32
 
 // Do the opposite: we want batching!
-static const uint16_t RX_QUEUE_SIZE = 1024;
-static const uint16_t TX_QUEUE_SIZE = 1024;
+static const uint16_t RX_QUEUE_SIZE = 256;
+static const uint16_t TX_QUEUE_SIZE = 256;
 
 // Buffer count for mempools
-static const unsigned MEMPOOL_BUFFER_COUNT = 2048;
+static const unsigned MEMPOOL_BUFFER_COUNT = 512;
 
 // Send the given packet to all devices except the packet's own
 void flood(struct rte_mbuf *packet, uint16_t nb_devices) {
@@ -1240,12 +1240,12 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-struct ip_addr {
-  uint32_t addr;
-};
 struct DynamicValue {
   uint64_t bucket_size;
   int64_t bucket_time;
+};
+struct ip_addr {
+  uint32_t addr;
 };
 struct FlowId {
   uint16_t src_port;
@@ -1255,11 +1255,20 @@ struct FlowId {
   uint16_t internal_device;
   uint8_t protocol;
 };
-void ip_addr_allocate(void* obj) {
+uint32_t FlowId_hash(void* obj) {
+  struct FlowId* id = (struct FlowId*) obj;
 
-  struct ip_addr* id = (struct ip_addr*) obj;
-  id->addr = 0;
 
+
+
+  unsigned hash = 0;
+  hash = __builtin_ia32_crc32si(hash, id->src_port);
+  hash = __builtin_ia32_crc32si(hash, id->dst_port);
+  hash = __builtin_ia32_crc32si(hash, id->src_ip);
+  hash = __builtin_ia32_crc32si(hash, id->dst_ip);
+  hash = __builtin_ia32_crc32si(hash, id->internal_device);
+  hash = __builtin_ia32_crc32si(hash, id->protocol);
+  return hash;
 }
 void FlowId_allocate(void* obj) {
 
@@ -1272,13 +1281,6 @@ void FlowId_allocate(void* obj) {
   id->protocol = 0;
 
 }
-void DynamicValue_allocate(void* obj) {
-
-  struct DynamicValue* id = (struct DynamicValue*) obj;
-  id->bucket_size = 0;
-  id->bucket_time = 0;
-
-}
 bool ip_addr_eq(void* a, void* b) {
   struct ip_addr* id1 = (struct ip_addr*) a;
   struct ip_addr* id2 = (struct ip_addr*) b;
@@ -1287,6 +1289,13 @@ bool ip_addr_eq(void* a, void* b) {
   return (id1->addr == id2->addr);
 
 
+
+}
+void DynamicValue_allocate(void* obj) {
+
+  struct DynamicValue* id = (struct DynamicValue*) obj;
+  id->bucket_size = 0;
+  id->bucket_time = 0;
 
 }
 bool FlowId_eq(void* a, void* b) {
@@ -1304,21 +1313,6 @@ bool FlowId_eq(void* a, void* b) {
 
 
 }
-uint32_t FlowId_hash(void* obj) {
-  struct FlowId* id = (struct FlowId*) obj;
-
-
-
-
-  unsigned hash = 0;
-  hash = __builtin_ia32_crc32si(hash, id->src_port);
-  hash = __builtin_ia32_crc32si(hash, id->dst_port);
-  hash = __builtin_ia32_crc32si(hash, id->src_ip);
-  hash = __builtin_ia32_crc32si(hash, id->dst_ip);
-  hash = __builtin_ia32_crc32si(hash, id->internal_device);
-  hash = __builtin_ia32_crc32si(hash, id->protocol);
-  return hash;
-}
 uint32_t ip_addr_hash(void* obj) {
   struct ip_addr* id = (struct ip_addr*) obj;
 
@@ -1328,6 +1322,12 @@ uint32_t ip_addr_hash(void* obj) {
   unsigned hash = 0;
   hash = __builtin_ia32_crc32si(hash, id->addr);
   return hash;
+}
+void ip_addr_allocate(void* obj) {
+
+  struct ip_addr* id = (struct ip_addr*) obj;
+  id->addr = 0;
+
 }
 
 bool FlowId_eq(void* a, void* b) ;
