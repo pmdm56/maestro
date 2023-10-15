@@ -1,0 +1,14 @@
+Configuration: /home/pedromoreira56/maestro/dpdk-nfs/nf-comb/configs/config_mixed.json
+Graphviz: enabled
+BDD1 color: #ff0000
+BDD2 color: #c0ff14
+Prior changes: BDD1
+[Conflict matrix] 
+              ------- BDD2 --------
+      actions | fwd | drop | bcast |
+        fwd   |  1     1      1
+BDD1    drop  |  1     -1     1
+        bcast |  1     1     -1
+
+KLEE: Using Z3 solver backend
+Merge complete. Check /home/pedromoreira56/maestro/dpdk-nfs/nf-comb/eval-combs/fw_wan_1_pol_wan_0_lan_1_config_mixed/nf.bdd and /home/pedromoreira56/maestro/dpdk-nfs/nf-comb/eval-combs/fw_wan_1_pol_wan_0_lan_1_config_mixed/nf.gv 
