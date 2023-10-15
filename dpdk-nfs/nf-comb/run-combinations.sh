@@ -5,10 +5,10 @@ NF_SAMPLES_COMB=$SCRIPT_DIR/examples-comb
 NF_CONFIGS=$SCRIPT_DIR/configs
 
 combinations=(
-  "fw_wan_1 pol_wan_0_lan_1 config_mixed.json"
-  "fw_wan_1 pol_wan_1_lan_0 config_mixed.json"
-  "nat_wan_1 pol_wan_0_lan_1 config_mixed.json"
-  "nat_wan_1 pol_wan_1_lan_0 config_mixed.json"
+  "fw_wan_1 pol_wan_0_lan_1 config_bdd1.json"
+  "fw_wan_1 pol_wan_1_lan_0 config_bdd1.json"
+  "nat_wan_1 pol_wan_0_lan_1 config_bdd1.json"
+  "nat_wan_1 pol_wan_1_lan_0 config_bdd1.json"
   # Add more combinations here as needed
 )
 

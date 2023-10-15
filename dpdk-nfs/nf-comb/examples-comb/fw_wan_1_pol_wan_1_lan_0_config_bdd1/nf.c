@@ -1240,9 +1240,6 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-struct ip_addr {
-  uint32_t addr;
-};
 struct DynamicValue {
   uint64_t bucket_size;
   int64_t bucket_time;
@@ -1252,41 +1249,15 @@ struct FlowId {
   uint16_t dst_port;
   uint32_t src_ip;
   uint32_t dst_ip;
-  uint16_t internal_device;
   uint8_t protocol;
+};
+struct ip_addr {
+  uint32_t addr;
 };
 void ip_addr_allocate(void* obj) {
 
   struct ip_addr* id = (struct ip_addr*) obj;
   id->addr = 0;
-
-}
-void FlowId_allocate(void* obj) {
-
-  struct FlowId* id = (struct FlowId*) obj;
-  id->src_port = 0;
-  id->dst_port = 0;
-  id->src_ip = 0;
-  id->dst_ip = 0;
-  id->internal_device = 0;
-  id->protocol = 0;
-
-}
-void DynamicValue_allocate(void* obj) {
-
-  struct DynamicValue* id = (struct DynamicValue*) obj;
-  id->bucket_size = 0;
-  id->bucket_time = 0;
-
-}
-bool ip_addr_eq(void* a, void* b) {
-  struct ip_addr* id1 = (struct ip_addr*) a;
-  struct ip_addr* id2 = (struct ip_addr*) b;
-
-
-  return (id1->addr == id2->addr);
-
-
 
 }
 bool FlowId_eq(void* a, void* b) {
@@ -1298,7 +1269,6 @@ bool FlowId_eq(void* a, void* b) {
      && (id1->dst_port == id2->dst_port)
      && (id1->src_ip == id2->src_ip)
      && (id1->dst_ip == id2->dst_ip)
-     && (id1->internal_device == id2->internal_device)
      && (id1->protocol == id2->protocol);
 
 
@@ -1315,9 +1285,31 @@ uint32_t FlowId_hash(void* obj) {
   hash = __builtin_ia32_crc32si(hash, id->dst_port);
   hash = __builtin_ia32_crc32si(hash, id->src_ip);
   hash = __builtin_ia32_crc32si(hash, id->dst_ip);
-  hash = __builtin_ia32_crc32si(hash, id->internal_device);
   hash = __builtin_ia32_crc32si(hash, id->protocol);
   return hash;
+}
+void FlowId_allocate(void* obj) {
+
+  struct FlowId* id = (struct FlowId*) obj;
+  id->src_port = 0;
+  id->dst_port = 0;
+  id->src_ip = 0;
+  id->dst_ip = 0;
+  id->protocol = 0;
+
+}
+bool ip_addr_eq(void* a, void* b) {
+  struct ip_addr* id1 = (struct ip_addr*) a;
+  struct ip_addr* id2 = (struct ip_addr*) b;
+
+
+  return (id1->addr == id2->addr);
+
+
+
+}
+void null_init(void* obj) {
+  *(uint32_t *)obj = 0;
 }
 uint32_t ip_addr_hash(void* obj) {
   struct ip_addr* id = (struct ip_addr*) obj;
@@ -1329,118 +1321,145 @@ uint32_t ip_addr_hash(void* obj) {
   hash = __builtin_ia32_crc32si(hash, id->addr);
   return hash;
 }
+void DynamicValue_allocate(void* obj) {
+
+  struct DynamicValue* id = (struct DynamicValue*) obj;
+  id->bucket_size = 0;
+  id->bucket_time = 0;
+
+}
 
 bool FlowId_eq(void* a, void* b) ;
 uint32_t FlowId_hash(void* obj) ;
 void FlowId_allocate(void* obj) ;
+void null_init(void* obj) ;
 bool ip_addr_eq(void* a, void* b) ;
 uint32_t ip_addr_hash(void* obj) ;
 void ip_addr_allocate(void* obj) ;
 void DynamicValue_allocate(void* obj) ;
 struct Map* map;
 struct Vector* vector;
+struct Vector* vector_1;
 struct DoubleChain* dchain;
 struct Map* map_1;
-struct Vector* vector_1;
-struct DoubleChain* dchain_1;
 struct Vector* vector_2;
+struct DoubleChain* dchain_1;
+struct Vector* vector_3;
 
 bool nf_init() {
   int map_allocation_succeeded__0 = map_allocate(FlowId_eq, FlowId_hash, 65536u, &map);
 
-  // 14
-  // 15
   // 16
   // 17
   // 18
   // 19
   // 20
+  // 21
+  // 22
+  // 23
   if (map_allocation_succeeded__0) {
     int vector_alloc_success__2 = vector_allocate(16u, 65536u, FlowId_allocate, &vector);
 
-    // 14
-    // 15
     // 16
     // 17
     // 18
     // 19
+    // 20
+    // 21
+    // 22
     if (vector_alloc_success__2) {
-      int is_dchain_allocated__4 = dchain_allocate(65536u, &dchain);
+      int vector_alloc_success__4 = vector_allocate(4u, 65536u, null_init, &vector_1);
 
-      // 14
-      // 15
       // 16
       // 17
       // 18
-      if (is_dchain_allocated__4) {
-        int map_allocation_succeeded__6 = map_allocate(ip_addr_eq, ip_addr_hash, 65536u, &map_1);
+      // 19
+      // 20
+      // 21
+      if (vector_alloc_success__4) {
+        int is_dchain_allocated__6 = dchain_allocate(65536u, &dchain);
 
-        // 14
-        // 15
         // 16
         // 17
-        if (map_allocation_succeeded__6) {
-          int vector_alloc_success__8 = vector_allocate(4u, 65536u, ip_addr_allocate, &vector_1);
+        // 18
+        // 19
+        // 20
+        if (is_dchain_allocated__6) {
+          int map_allocation_succeeded__8 = map_allocate(ip_addr_eq, ip_addr_hash, 65536u, &map_1);
 
-          // 14
-          // 15
           // 16
-          if (vector_alloc_success__8) {
-            int is_dchain_allocated__10 = dchain_allocate(65536u, &dchain_1);
+          // 17
+          // 18
+          // 19
+          if (map_allocation_succeeded__8) {
+            int vector_alloc_success__10 = vector_allocate(4u, 65536u, ip_addr_allocate, &vector_2);
 
-            // 14
-            // 15
-            if (is_dchain_allocated__10) {
-              int vector_alloc_success__12 = vector_allocate(16u, 65536u, DynamicValue_allocate, &vector_2);
+            // 16
+            // 17
+            // 18
+            if (vector_alloc_success__10) {
+              int is_dchain_allocated__12 = dchain_allocate(65536u, &dchain_1);
 
-              // 14
-              if (vector_alloc_success__12) {
-                return 1;
+              // 16
+              // 17
+              if (is_dchain_allocated__12) {
+                int vector_alloc_success__14 = vector_allocate(16u, 65536u, DynamicValue_allocate, &vector_3);
+
+                // 16
+                if (vector_alloc_success__14) {
+                  return 1;
+                }
+
+                // 17
+                else {
+                  return 0;
+                } // !vector_alloc_success__14
+
               }
 
-              // 15
+              // 18
               else {
                 return 0;
-              } // !vector_alloc_success__12
+              } // !is_dchain_allocated__12
 
             }
 
-            // 16
+            // 19
             else {
               return 0;
-            } // !is_dchain_allocated__10
+            } // !vector_alloc_success__10
 
           }
 
-          // 17
+          // 20
           else {
             return 0;
-          } // !vector_alloc_success__8
+          } // !map_allocation_succeeded__8
 
         }
 
-        // 18
+        // 21
         else {
           return 0;
-        } // !map_allocation_succeeded__6
+        } // !is_dchain_allocated__6
 
       }
 
-      // 19
+      // 22
       else {
         return 0;
-      } // !is_dchain_allocated__4
+      } // !vector_alloc_success__4
 
     }
 
-    // 20
+    // 23
     else {
       return 0;
     } // !vector_alloc_success__2
 
   }
 
-  // 21
+  // 24
   else {
     return 0;
   } // !map_allocation_succeeded__0
@@ -1448,135 +1467,133 @@ bool nf_init() {
 }
 
 int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t now) {
-  int number_of_freed_flows__24 = expire_items_single_map(dchain, vector, map, now - 100000000000ul);
+  int number_of_freed_flows__27 = expire_items_single_map(dchain, vector, map, now - 100000000000ul);
   struct rte_ether_hdr* ether_header_1 = (struct rte_ether_hdr*)(packet);
 
-  // 41
-  // 46
-  // 51
-  // 73
-  // 77
-  // 87
-  // 92
-  // 97
-  // 102
-  // 116
-  // 120
-  // 130
-  // 135
-  // 140
-  // 145
-  // 161
-  // 165
-  // 175
-  // 180
-  // 185
-  // 190
-  // 195
+  // 40
+  // 48
+  // 71
+  // 75
+  // 85
+  // 90
+  // 95
+  // 100
+  // 114
+  // 118
+  // 128
+  // 133
+  // 138
+  // 143
+  // 158
+  // 162
+  // 172
+  // 177
+  // 182
+  // 187
+  // 192
+  // 204
   // 207
-  // 210
-  // 219
-  // 223
-  // 227
-  // 231
+  // 216
+  // 220
+  // 224
+  // 228
   if (0u == ((8u != ether_header_1->ether_type) | ((4294967282u + packet_length) < 20ul))) {
     struct rte_ipv4_hdr* ipv4_header_1 = (struct rte_ipv4_hdr*)(packet + 14u);
 
-    // 41
-    // 46
-    // 51
-    // 73
-    // 77
-    // 87
-    // 92
-    // 97
-    // 102
-    // 116
-    // 120
-    // 130
-    // 135
-    // 140
-    // 145
-    // 161
-    // 165
-    // 175
-    // 180
-    // 185
-    // 190
+    // 40
+    // 48
+    // 71
+    // 75
+    // 85
+    // 90
+    // 95
+    // 100
+    // 114
+    // 118
+    // 128
+    // 133
+    // 138
+    // 143
+    // 158
+    // 162
+    // 172
+    // 177
+    // 182
+    // 187
     if (0u == ((0u == ((6u == ipv4_header_1->next_proto_id) | (17u == ipv4_header_1->next_proto_id))) | ((4294967262u + packet_length) < 4ul))) {
       struct tcpudp_hdr* tcpudp_header_1 = (struct tcpudp_hdr*)(packet + (14u + 20u));
 
-      // 41
-      // 46
-      // 51
+      // 40
+      // 48
       if (device) {
-        int32_t dchain_is_index_allocated__31 = dchain_is_index_allocated(dchain, tcpudp_header_1->dst_port);
+        uint8_t map_key[13];
+        map_key[0u] = tcpudp_header_1->dst_port & 0xff;
+        map_key[1u] = (tcpudp_header_1->dst_port >> 8) & 0xff;
+        map_key[2u] = tcpudp_header_1->src_port & 0xff;
+        map_key[3u] = (tcpudp_header_1->src_port >> 8) & 0xff;
+        map_key[4u] = ipv4_header_1->dst_addr & 0xff;
+        map_key[5u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
+        map_key[6u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
+        map_key[7u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
+        map_key[8u] = ipv4_header_1->src_addr & 0xff;
+        map_key[9u] = (ipv4_header_1->src_addr >> 8) & 0xff;
+        map_key[10u] = (ipv4_header_1->src_addr >> 16) & 0xff;
+        map_key[11u] = (ipv4_header_1->src_addr >> 24) & 0xff;
+        map_key[12u] = ipv4_header_1->next_proto_id;
+        int map_value_out;
+        int map_has_this_key__34 = map_get(map, &map_key, &map_value_out);
 
-        // 41
-        // 46
-        if (dchain_is_index_allocated__31) {
-          uint8_t* vector_value_out = 0u;
-          vector_borrow(vector, tcpudp_header_1->dst_port, (void**)(&vector_value_out));
-          vector_return(vector, tcpudp_header_1->dst_port, vector_value_out);
-
-          // 41
-          if (0u == (((vector_value_out[8ul] != ipv4_header_1->src_addr) | (vector_value_out[2ul] != tcpudp_header_1->src_port)) | (vector_value_out[14ul] != ipv4_header_1->next_proto_id))) {
-            int checksum__36 = rte_ipv4_udptcp_cksum(ipv4_header_1, tcpudp_header_1);
-            int number_of_freed_flows__37 = expire_items_single_map(dchain_1, vector_1, map_1, now - 10000000000ul);
-            tcpudp_header_1->dst_port = vector_value_out[0ul];
-            ipv4_header_1->hdr_checksum = checksum__36 & 0xffff;
-            ipv4_header_1->dst_addr = vector_value_out[4ul];
-            ether_header_1->d_addr.addr_bytes[0ul] = 1u;
-            ether_header_1->d_addr.addr_bytes[1ul] = 35u;
-            ether_header_1->d_addr.addr_bytes[2ul] = 69u;
-            ether_header_1->d_addr.addr_bytes[3ul] = 103u;
-            ether_header_1->d_addr.addr_bytes[4ul] = 137u;
-            ether_header_1->d_addr.addr_bytes[5ul] = 0u;
-            ether_header_1->s_addr.addr_bytes[0ul] = 0u;
-            ether_header_1->s_addr.addr_bytes[1ul] = 0u;
-            ether_header_1->s_addr.addr_bytes[2ul] = 0u;
-            ether_header_1->s_addr.addr_bytes[3ul] = 0u;
-            ether_header_1->s_addr.addr_bytes[4ul] = 0u;
-            ether_header_1->s_addr.addr_bytes[5ul] = 0u;
-            return 0;
-          }
-
-          // 46
-          else {
-            int number_of_freed_flows__42 = expire_items_single_map(dchain_1, vector_1, map_1, now - 10000000000ul);
-            return 0;
-          } // !(0u == (((vector_value_out[8ul] != ipv4_header_1->src_addr) | (vector_value_out[2ul] != tcpudp_header_1->src_port)) | (vector_value_out[14ul] != ipv4_header_1->next_proto_id)))
-
+        // 40
+        if (0u == map_has_this_key__34) {
+          int number_of_freed_flows__36 = expire_items_single_map(dchain_1, vector_2, map_1, now - 10000000000ul);
+          // dropping
+          return device;
         }
 
-        // 51
+        // 48
         else {
-          int number_of_freed_flows__47 = expire_items_single_map(dchain_1, vector_1, map_1, now - 10000000000ul);
+          uint8_t* vector_value_out = 0u;
+          vector_borrow(vector_1, map_value_out, (void**)(&vector_value_out));
+          vector_return(vector_1, map_value_out, vector_value_out);
+          dchain_rejuvenate_index(dchain, map_value_out, now);
+          int number_of_freed_flows__44 = expire_items_single_map(dchain_1, vector_2, map_1, now - 10000000000ul);
+          ether_header_1->d_addr.addr_bytes[0ul] = 1u;
+          ether_header_1->d_addr.addr_bytes[1ul] = 35u;
+          ether_header_1->d_addr.addr_bytes[2ul] = 69u;
+          ether_header_1->d_addr.addr_bytes[3ul] = 103u;
+          ether_header_1->d_addr.addr_bytes[4ul] = 137u;
+          ether_header_1->d_addr.addr_bytes[5ul] = 0u;
+          ether_header_1->s_addr.addr_bytes[0ul] = 0u;
+          ether_header_1->s_addr.addr_bytes[1ul] = 0u;
+          ether_header_1->s_addr.addr_bytes[2ul] = 0u;
+          ether_header_1->s_addr.addr_bytes[3ul] = 0u;
+          ether_header_1->s_addr.addr_bytes[4ul] = 0u;
+          ether_header_1->s_addr.addr_bytes[5ul] = 0u;
           return 0;
-        } // !dchain_is_index_allocated__31
+        } // !(0u == map_has_this_key__34)
 
       }
 
-      // 73
-      // 77
-      // 87
-      // 92
-      // 97
-      // 102
-      // 116
-      // 120
-      // 130
-      // 135
-      // 140
-      // 145
-      // 161
-      // 165
-      // 175
-      // 180
-      // 185
-      // 190
+      // 71
+      // 75
+      // 85
+      // 90
+      // 95
+      // 100
+      // 114
+      // 118
+      // 128
+      // 133
+      // 138
+      // 143
+      // 158
+      // 162
+      // 172
+      // 177
+      // 182
+      // 187
       else {
-        uint8_t map_key[15];
+        uint8_t map_key[13];
         map_key[0u] = tcpudp_header_1->src_port & 0xff;
         map_key[1u] = (tcpudp_header_1->src_port >> 8) & 0xff;
         map_key[2u] = tcpudp_header_1->dst_port & 0xff;
@@ -1589,37 +1606,35 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
         map_key[9u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
         map_key[10u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
         map_key[11u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
-        map_key[12u] = 0u;
-        map_key[13u] = 0u;
-        map_key[14u] = ipv4_header_1->next_proto_id;
+        map_key[12u] = ipv4_header_1->next_proto_id;
         int map_value_out;
-        int map_has_this_key__52 = map_get(map, &map_key, &map_value_out);
+        int map_has_this_key__49 = map_get(map, &map_key, &map_value_out);
 
-        // 73
-        // 77
-        // 87
-        // 92
-        // 97
-        // 102
-        // 116
-        // 120
-        // 130
-        // 135
-        // 140
-        // 145
-        if (0u == map_has_this_key__52) {
-          uint32_t new_index__54;
-          int out_of_space__54 = !dchain_allocate_new_index(dchain, &new_index__54, now);
+        // 71
+        // 75
+        // 85
+        // 90
+        // 95
+        // 100
+        // 114
+        // 118
+        // 128
+        // 133
+        // 138
+        // 143
+        if (0u == map_has_this_key__49) {
+          uint32_t new_index__51;
+          int out_of_space__51 = !dchain_allocate_new_index(dchain, &new_index__51, now);
 
-          // 73
-          // 77
-          // 87
-          // 92
-          // 97
-          // 102
-          if (false == ((out_of_space__54) & (0u == number_of_freed_flows__24))) {
+          // 71
+          // 75
+          // 85
+          // 90
+          // 95
+          // 100
+          if (false == ((out_of_space__51) & (0u == number_of_freed_flows__27))) {
             uint8_t* vector_value_out = 0u;
-            vector_borrow(vector, new_index__54, (void**)(&vector_value_out));
+            vector_borrow(vector, new_index__51, (void**)(&vector_value_out));
             vector_value_out[0u] = tcpudp_header_1->src_port & 0xff;
             vector_value_out[1u] = (tcpudp_header_1->src_port >> 8) & 0xff;
             vector_value_out[2u] = tcpudp_header_1->dst_port & 0xff;
@@ -1632,60 +1647,63 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
             vector_value_out[9u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
             vector_value_out[10u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
             vector_value_out[11u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
-            vector_value_out[12u] = 0u;
-            vector_value_out[13u] = 0u;
-            vector_value_out[14u] = ipv4_header_1->next_proto_id;
+            vector_value_out[12u] = ipv4_header_1->next_proto_id;
+            vector_value_out[13u] = 171u;
+            vector_value_out[14u] = 171u;
             vector_value_out[15u] = 171u;
-            map_put(map, vector_value_out, new_index__54);
-            vector_return(vector, new_index__54, vector_value_out);
-            int checksum__59 = rte_ipv4_udptcp_cksum(ipv4_header_1, tcpudp_header_1);
-            int number_of_freed_flows__60 = expire_items_single_map(dchain_1, vector_1, map_1, now - 10000000000ul);
+            map_put(map, vector_value_out, new_index__51);
+            vector_return(vector, new_index__51, vector_value_out);
+            uint8_t* vector_value_out_1 = 0u;
+            vector_borrow(vector_1, new_index__51, (void**)(&vector_value_out_1));
+            vector_value_out_1[0u] = 0u;
+            vector_value_out_1[1u] = 0u;
+            vector_value_out_1[2u] = 0u;
+            vector_value_out_1[3u] = 0u;
+            vector_return(vector_1, new_index__51, vector_value_out_1);
+            int number_of_freed_flows__58 = expire_items_single_map(dchain_1, vector_2, map_1, now - 10000000000ul);
             uint8_t map_key_1[4];
             map_key_1[0u] = ipv4_header_1->dst_addr & 0xff;
             map_key_1[1u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
             map_key_1[2u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
             map_key_1[3u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
             int map_value_out_1;
-            int map_has_this_key__61 = map_get(map_1, &map_key_1, &map_value_out_1);
+            int map_has_this_key__59 = map_get(map_1, &map_key_1, &map_value_out_1);
 
-            // 73
-            // 77
-            if (0u == map_has_this_key__61) {
-              uint32_t new_index__63;
-              int out_of_space__63 = !dchain_allocate_new_index(dchain_1, &new_index__63, now);
+            // 71
+            // 75
+            if (0u == map_has_this_key__59) {
+              uint32_t new_index__61;
+              int out_of_space__61 = !dchain_allocate_new_index(dchain_1, &new_index__61, now);
 
-              // 73
-              if (false == ((out_of_space__63) & (0u == number_of_freed_flows__60))) {
-                uint8_t* vector_value_out_1 = 0u;
-                vector_borrow(vector_1, new_index__63, (void**)(&vector_value_out_1));
-                vector_value_out_1[0u] = ipv4_header_1->dst_addr & 0xff;
-                vector_value_out_1[1u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
-                vector_value_out_1[2u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
-                vector_value_out_1[3u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
+              // 71
+              if (false == ((out_of_space__61) & (0u == number_of_freed_flows__58))) {
                 uint8_t* vector_value_out_2 = 0u;
-                vector_borrow(vector_2, new_index__63, (void**)(&vector_value_out_2));
-                vector_value_out_2[0u] = 10000000000ul - packet_length;
-                vector_value_out_2[1u] = ((10000000000ul - packet_length) >> 8ul) & 0xff;
-                vector_value_out_2[2u] = ((10000000000ul - packet_length) >> 16ul) & 0xff;
-                vector_value_out_2[3u] = 84u;
-                vector_value_out_2[4u] = 2u;
-                vector_value_out_2[5u] = 0u;
-                vector_value_out_2[6u] = 0u;
-                vector_value_out_2[7u] = 0u;
-                vector_value_out_2[8u] = now & 0xff;
-                vector_value_out_2[9u] = (now >> 8) & 0xff;
-                vector_value_out_2[10u] = (now >> 16) & 0xff;
-                vector_value_out_2[11u] = (now >> 24) & 0xff;
-                vector_value_out_2[12u] = (now >> 32) & 0xff;
-                vector_value_out_2[13u] = (now >> 40) & 0xff;
-                vector_value_out_2[14u] = (now >> 48) & 0xff;
-                vector_value_out_2[15u] = (now >> 56) & 0xff;
-                map_put(map_1, vector_value_out_1, new_index__63);
-                vector_return(vector_1, new_index__63, vector_value_out_1);
-                vector_return(vector_2, new_index__63, vector_value_out_2);
-                tcpudp_header_1->src_port = new_index__54 & 0xffff;
-                ipv4_header_1->hdr_checksum = checksum__59 & 0xffff;
-                ipv4_header_1->src_addr = 117440522u;
+                vector_borrow(vector_2, new_index__61, (void**)(&vector_value_out_2));
+                vector_value_out_2[0u] = ipv4_header_1->dst_addr & 0xff;
+                vector_value_out_2[1u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
+                vector_value_out_2[2u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
+                vector_value_out_2[3u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
+                uint8_t* vector_value_out_3 = 0u;
+                vector_borrow(vector_3, new_index__61, (void**)(&vector_value_out_3));
+                vector_value_out_3[0u] = 10000000000ul - packet_length;
+                vector_value_out_3[1u] = ((10000000000ul - packet_length) >> 8ul) & 0xff;
+                vector_value_out_3[2u] = ((10000000000ul - packet_length) >> 16ul) & 0xff;
+                vector_value_out_3[3u] = 84u;
+                vector_value_out_3[4u] = 2u;
+                vector_value_out_3[5u] = 0u;
+                vector_value_out_3[6u] = 0u;
+                vector_value_out_3[7u] = 0u;
+                vector_value_out_3[8u] = now & 0xff;
+                vector_value_out_3[9u] = (now >> 8) & 0xff;
+                vector_value_out_3[10u] = (now >> 16) & 0xff;
+                vector_value_out_3[11u] = (now >> 24) & 0xff;
+                vector_value_out_3[12u] = (now >> 32) & 0xff;
+                vector_value_out_3[13u] = (now >> 40) & 0xff;
+                vector_value_out_3[14u] = (now >> 48) & 0xff;
+                vector_value_out_3[15u] = (now >> 56) & 0xff;
+                map_put(map_1, vector_value_out_2, new_index__61);
+                vector_return(vector_2, new_index__61, vector_value_out_2);
+                vector_return(vector_3, new_index__61, vector_value_out_3);
                 ether_header_1->d_addr.addr_bytes[0ul] = 1u;
                 ether_header_1->d_addr.addr_bytes[1ul] = 35u;
                 ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -1701,11 +1719,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                 return 1;
               }
 
-              // 77
+              // 75
               else {
-                tcpudp_header_1->src_port = new_index__54 & 0xffff;
-                ipv4_header_1->hdr_checksum = checksum__59 & 0xffff;
-                ipv4_header_1->src_addr = 117440522u;
                 ether_header_1->d_addr.addr_bytes[0ul] = 1u;
                 ether_header_1->d_addr.addr_bytes[1ul] = 35u;
                 ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -1718,74 +1733,48 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                 ether_header_1->s_addr.addr_bytes[3ul] = 0u;
                 ether_header_1->s_addr.addr_bytes[4ul] = 0u;
                 ether_header_1->s_addr.addr_bytes[5ul] = 0u;
-                // dropping
-                return device;
-              } // !(false == ((out_of_space__63) & (0u == number_of_freed_flows__60)))
+                return 1;
+              } // !(false == ((out_of_space__61) & (0u == number_of_freed_flows__58)))
 
             }
 
-            // 87
-            // 92
-            // 97
-            // 102
+            // 85
+            // 90
+            // 95
+            // 100
             else {
               dchain_rejuvenate_index(dchain_1, map_value_out_1, now);
-              uint8_t* vector_value_out_1 = 0u;
-              vector_borrow(vector_2, map_value_out_1, (void**)(&vector_value_out_1));
-              vector_value_out_1[0u] = 10000000000ul - packet_length;
-              vector_value_out_1[1u] = ((10000000000ul - packet_length) >> 8ul) & 0xff;
-              vector_value_out_1[2u] = ((10000000000ul - packet_length) >> 16ul) & 0xff;
-              vector_value_out_1[3u] = 84u;
-              vector_value_out_1[4u] = 2u;
-              vector_value_out_1[5u] = 0u;
-              vector_value_out_1[6u] = 0u;
-              vector_value_out_1[7u] = 0u;
-              vector_value_out_1[8u] = now & 0xff;
-              vector_value_out_1[9u] = (now >> 8) & 0xff;
-              vector_value_out_1[10u] = (now >> 16) & 0xff;
-              vector_value_out_1[11u] = (now >> 24) & 0xff;
-              vector_value_out_1[12u] = (now >> 32) & 0xff;
-              vector_value_out_1[13u] = (now >> 40) & 0xff;
-              vector_value_out_1[14u] = (now >> 48) & 0xff;
-              vector_value_out_1[15u] = (now >> 56) & 0xff;
+              uint8_t* vector_value_out_2 = 0u;
+              vector_borrow(vector_3, map_value_out_1, (void**)(&vector_value_out_2));
+              vector_value_out_2[0u] = 10000000000ul - packet_length;
+              vector_value_out_2[1u] = ((10000000000ul - packet_length) >> 8ul) & 0xff;
+              vector_value_out_2[2u] = ((10000000000ul - packet_length) >> 16ul) & 0xff;
+              vector_value_out_2[3u] = 84u;
+              vector_value_out_2[4u] = 2u;
+              vector_value_out_2[5u] = 0u;
+              vector_value_out_2[6u] = 0u;
+              vector_value_out_2[7u] = 0u;
+              vector_value_out_2[8u] = now & 0xff;
+              vector_value_out_2[9u] = (now >> 8) & 0xff;
+              vector_value_out_2[10u] = (now >> 16) & 0xff;
+              vector_value_out_2[11u] = (now >> 24) & 0xff;
+              vector_value_out_2[12u] = (now >> 32) & 0xff;
+              vector_value_out_2[13u] = (now >> 40) & 0xff;
+              vector_value_out_2[14u] = (now >> 48) & 0xff;
+              vector_value_out_2[15u] = (now >> 56) & 0xff;
 
-              // 87
-              // 92
-              // 97
-              if ((now - vector_value_out_1[8ul]) < 10000000000ul) {
+              // 85
+              // 90
+              // 95
+              if ((now - vector_value_out_2[8ul]) < 10000000000ul) {
 
-                // 87
-                // 92
-                if (false == (10000000000ul < (vector_value_out_1[0ul] + ((1000000000ul * (now - vector_value_out_1[8ul])) / 1000000000ul)))) {
+                // 85
+                // 90
+                if (false == (10000000000ul < (vector_value_out_2[0ul] + ((1000000000ul * (now - vector_value_out_2[8ul])) / 1000000000ul)))) {
 
-                  // 87
-                  if (false == (packet_length < (vector_value_out_1[0ul] + ((1000000000ul * (now - vector_value_out_1[8ul])) / 1000000000ul)))) {
-                    vector_return(vector_2, map_value_out_1, vector_value_out_1);
-                    tcpudp_header_1->src_port = new_index__54 & 0xffff;
-                    ipv4_header_1->hdr_checksum = checksum__59 & 0xffff;
-                    ipv4_header_1->src_addr = 117440522u;
-                    ether_header_1->d_addr.addr_bytes[0ul] = 1u;
-                    ether_header_1->d_addr.addr_bytes[1ul] = 35u;
-                    ether_header_1->d_addr.addr_bytes[2ul] = 69u;
-                    ether_header_1->d_addr.addr_bytes[3ul] = 103u;
-                    ether_header_1->d_addr.addr_bytes[4ul] = 137u;
-                    ether_header_1->d_addr.addr_bytes[5ul] = 1u;
-                    ether_header_1->s_addr.addr_bytes[0ul] = 0u;
-                    ether_header_1->s_addr.addr_bytes[1ul] = 0u;
-                    ether_header_1->s_addr.addr_bytes[2ul] = 0u;
-                    ether_header_1->s_addr.addr_bytes[3ul] = 0u;
-                    ether_header_1->s_addr.addr_bytes[4ul] = 0u;
-                    ether_header_1->s_addr.addr_bytes[5ul] = 0u;
-                    // dropping
-                    return device;
-                  }
-
-                  // 92
-                  else {
-                    vector_return(vector_2, map_value_out_1, vector_value_out_1);
-                    tcpudp_header_1->src_port = new_index__54 & 0xffff;
-                    ipv4_header_1->hdr_checksum = checksum__59 & 0xffff;
-                    ipv4_header_1->src_addr = 117440522u;
+                  // 85
+                  if (false == (packet_length < (vector_value_out_2[0ul] + ((1000000000ul * (now - vector_value_out_2[8ul])) / 1000000000ul)))) {
+                    vector_return(vector_3, map_value_out_1, vector_value_out_2);
                     ether_header_1->d_addr.addr_bytes[0ul] = 1u;
                     ether_header_1->d_addr.addr_bytes[1ul] = 35u;
                     ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -1799,16 +1788,31 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                     ether_header_1->s_addr.addr_bytes[4ul] = 0u;
                     ether_header_1->s_addr.addr_bytes[5ul] = 0u;
                     return 1;
-                  } // !(false == (packet_length < (vector_value_out_1[0ul] + ((1000000000ul * (now - vector_value_out_1[8ul])) / 1000000000ul))))
+                  }
+
+                  // 90
+                  else {
+                    vector_return(vector_3, map_value_out_1, vector_value_out_2);
+                    ether_header_1->d_addr.addr_bytes[0ul] = 1u;
+                    ether_header_1->d_addr.addr_bytes[1ul] = 35u;
+                    ether_header_1->d_addr.addr_bytes[2ul] = 69u;
+                    ether_header_1->d_addr.addr_bytes[3ul] = 103u;
+                    ether_header_1->d_addr.addr_bytes[4ul] = 137u;
+                    ether_header_1->d_addr.addr_bytes[5ul] = 1u;
+                    ether_header_1->s_addr.addr_bytes[0ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[1ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[2ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[3ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[4ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[5ul] = 0u;
+                    return 1;
+                  } // !(false == (packet_length < (vector_value_out_2[0ul] + ((1000000000ul * (now - vector_value_out_2[8ul])) / 1000000000ul))))
 
                 }
 
-                // 97
+                // 95
                 else {
-                  vector_return(vector_2, map_value_out_1, vector_value_out_1);
-                  tcpudp_header_1->src_port = new_index__54 & 0xffff;
-                  ipv4_header_1->hdr_checksum = checksum__59 & 0xffff;
-                  ipv4_header_1->src_addr = 117440522u;
+                  vector_return(vector_3, map_value_out_1, vector_value_out_2);
                   ether_header_1->d_addr.addr_bytes[0ul] = 1u;
                   ether_header_1->d_addr.addr_bytes[1ul] = 35u;
                   ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -1822,16 +1826,13 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                   ether_header_1->s_addr.addr_bytes[4ul] = 0u;
                   ether_header_1->s_addr.addr_bytes[5ul] = 0u;
                   return 1;
-                } // !(false == (10000000000ul < (vector_value_out_1[0ul] + ((1000000000ul * (now - vector_value_out_1[8ul])) / 1000000000ul))))
+                } // !(false == (10000000000ul < (vector_value_out_2[0ul] + ((1000000000ul * (now - vector_value_out_2[8ul])) / 1000000000ul))))
 
               }
 
-              // 102
+              // 100
               else {
-                vector_return(vector_2, map_value_out_1, vector_value_out_1);
-                tcpudp_header_1->src_port = new_index__54 & 0xffff;
-                ipv4_header_1->hdr_checksum = checksum__59 & 0xffff;
-                ipv4_header_1->src_addr = 117440522u;
+                vector_return(vector_3, map_value_out_1, vector_value_out_2);
                 ether_header_1->d_addr.addr_bytes[0ul] = 1u;
                 ether_header_1->d_addr.addr_bytes[1ul] = 35u;
                 ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -1845,44 +1846,44 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                 ether_header_1->s_addr.addr_bytes[4ul] = 0u;
                 ether_header_1->s_addr.addr_bytes[5ul] = 0u;
                 return 1;
-              } // !((now - vector_value_out_1[8ul]) < 10000000000ul)
+              } // !((now - vector_value_out_2[8ul]) < 10000000000ul)
 
-            } // !(0u == map_has_this_key__61)
+            } // !(0u == map_has_this_key__59)
 
           }
 
-          // 116
-          // 120
-          // 130
-          // 135
-          // 140
-          // 145
+          // 114
+          // 118
+          // 128
+          // 133
+          // 138
+          // 143
           else {
-            int number_of_freed_flows__103 = expire_items_single_map(dchain_1, vector_1, map_1, now - 10000000000ul);
+            int number_of_freed_flows__101 = expire_items_single_map(dchain_1, vector_2, map_1, now - 10000000000ul);
             uint8_t map_key_1[4];
             map_key_1[0u] = ipv4_header_1->dst_addr & 0xff;
             map_key_1[1u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
             map_key_1[2u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
             map_key_1[3u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
             int map_value_out_1;
-            int map_has_this_key__104 = map_get(map_1, &map_key_1, &map_value_out_1);
+            int map_has_this_key__102 = map_get(map_1, &map_key_1, &map_value_out_1);
 
-            // 116
-            // 120
-            if (0u == map_has_this_key__104) {
-              uint32_t new_index__106;
-              int out_of_space__106 = !dchain_allocate_new_index(dchain_1, &new_index__106, now);
+            // 114
+            // 118
+            if (0u == map_has_this_key__102) {
+              uint32_t new_index__104;
+              int out_of_space__104 = !dchain_allocate_new_index(dchain_1, &new_index__104, now);
 
-              // 116
-              if (false == ((out_of_space__106) & (0u == number_of_freed_flows__103))) {
+              // 114
+              if (false == ((out_of_space__104) & (0u == number_of_freed_flows__101))) {
                 uint8_t* vector_value_out = 0u;
-                vector_borrow(vector_1, new_index__106, (void**)(&vector_value_out));
+                vector_borrow(vector_2, new_index__104, (void**)(&vector_value_out));
                 vector_value_out[0u] = ipv4_header_1->dst_addr & 0xff;
                 vector_value_out[1u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
                 vector_value_out[2u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
                 vector_value_out[3u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
                 uint8_t* vector_value_out_1 = 0u;
-                vector_borrow(vector_2, new_index__106, (void**)(&vector_value_out_1));
+                vector_borrow(vector_3, new_index__104, (void**)(&vector_value_out_1));
                 vector_value_out_1[0u] = 10000000000ul - packet_length;
                 vector_value_out_1[1u] = ((10000000000ul - packet_length) >> 8ul) & 0xff;
                 vector_value_out_1[2u] = ((10000000000ul - packet_length) >> 16ul) & 0xff;
@@ -1899,28 +1900,51 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                 vector_value_out_1[13u] = (now >> 40) & 0xff;
                 vector_value_out_1[14u] = (now >> 48) & 0xff;
                 vector_value_out_1[15u] = (now >> 56) & 0xff;
-                map_put(map_1, vector_value_out, new_index__106);
-                vector_return(vector_1, new_index__106, vector_value_out);
-                vector_return(vector_2, new_index__106, vector_value_out_1);
+                map_put(map_1, vector_value_out, new_index__104);
+                vector_return(vector_2, new_index__104, vector_value_out);
+                vector_return(vector_3, new_index__104, vector_value_out_1);
+                ether_header_1->d_addr.addr_bytes[0ul] = 1u;
+                ether_header_1->d_addr.addr_bytes[1ul] = 35u;
+                ether_header_1->d_addr.addr_bytes[2ul] = 69u;
+                ether_header_1->d_addr.addr_bytes[3ul] = 103u;
+                ether_header_1->d_addr.addr_bytes[4ul] = 137u;
+                ether_header_1->d_addr.addr_bytes[5ul] = 1u;
+                ether_header_1->s_addr.addr_bytes[0ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[1ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[2ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[3ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[4ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[5ul] = 0u;
                 return 1;
               }
 
-              // 120
+              // 118
               else {
-                // dropping
-                return device;
-              } // !(false == ((out_of_space__106) & (0u == number_of_freed_flows__103)))
+                ether_header_1->d_addr.addr_bytes[0ul] = 1u;
+                ether_header_1->d_addr.addr_bytes[1ul] = 35u;
+                ether_header_1->d_addr.addr_bytes[2ul] = 69u;
+                ether_header_1->d_addr.addr_bytes[3ul] = 103u;
+                ether_header_1->d_addr.addr_bytes[4ul] = 137u;
+                ether_header_1->d_addr.addr_bytes[5ul] = 1u;
+                ether_header_1->s_addr.addr_bytes[0ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[1ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[2ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[3ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[4ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[5ul] = 0u;
+                return 1;
+              } // !(false == ((out_of_space__104) & (0u == number_of_freed_flows__101)))
 
             }
 
-            // 130
-            // 135
-            // 140
-            // 145
+            // 128
+            // 133
+            // 138
+            // 143
             else {
               dchain_rejuvenate_index(dchain_1, map_value_out_1, now);
               uint8_t* vector_value_out = 0u;
-              vector_borrow(vector_2, map_value_out_1, (void**)(&vector_value_out));
+              vector_borrow(vector_3, map_value_out_1, (void**)(&vector_value_out));
               vector_value_out[0u] = 10000000000ul - packet_length;
               vector_value_out[1u] = ((10000000000ul - packet_length) >> 8ul) & 0xff;
               vector_value_out[2u] = ((10000000000ul - packet_length) >> 16ul) & 0xff;
@@ -1938,84 +1962,130 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
               vector_value_out[14u] = (now >> 48) & 0xff;
               vector_value_out[15u] = (now >> 56) & 0xff;
 
-              // 130
-              // 135
-              // 140
+              // 128
+              // 133
+              // 138
               if ((now - vector_value_out[8ul]) < 10000000000ul) {
 
-                // 130
-                // 135
+                // 128
+                // 133
                 if (false == (10000000000ul < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul)))) {
 
-                  // 130
+                  // 128
                   if (false == (packet_length < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul)))) {
-                    vector_return(vector_2, map_value_out_1, vector_value_out);
-                    // dropping
-                    return device;
+                    vector_return(vector_3, map_value_out_1, vector_value_out);
+                    ether_header_1->d_addr.addr_bytes[0ul] = 1u;
+                    ether_header_1->d_addr.addr_bytes[1ul] = 35u;
+                    ether_header_1->d_addr.addr_bytes[2ul] = 69u;
+                    ether_header_1->d_addr.addr_bytes[3ul] = 103u;
+                    ether_header_1->d_addr.addr_bytes[4ul] = 137u;
+                    ether_header_1->d_addr.addr_bytes[5ul] = 1u;
+                    ether_header_1->s_addr.addr_bytes[0ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[1ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[2ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[3ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[4ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[5ul] = 0u;
+                    return 1;
                   }
 
-                  // 135
+                  // 133
                   else {
-                    vector_return(vector_2, map_value_out_1, vector_value_out);
+                    vector_return(vector_3, map_value_out_1, vector_value_out);
+                    ether_header_1->d_addr.addr_bytes[0ul] = 1u;
+                    ether_header_1->d_addr.addr_bytes[1ul] = 35u;
+                    ether_header_1->d_addr.addr_bytes[2ul] = 69u;
+                    ether_header_1->d_addr.addr_bytes[3ul] = 103u;
+                    ether_header_1->d_addr.addr_bytes[4ul] = 137u;
+                    ether_header_1->d_addr.addr_bytes[5ul] = 1u;
+                    ether_header_1->s_addr.addr_bytes[0ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[1ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[2ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[3ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[4ul] = 0u;
+                    ether_header_1->s_addr.addr_bytes[5ul] = 0u;
                     return 1;
                   } // !(false == (packet_length < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul))))
 
                 }
 
-                // 140
+                // 138
                 else {
-                  vector_return(vector_2, map_value_out_1, vector_value_out);
+                  vector_return(vector_3, map_value_out_1, vector_value_out);
+                  ether_header_1->d_addr.addr_bytes[0ul] = 1u;
+                  ether_header_1->d_addr.addr_bytes[1ul] = 35u;
+                  ether_header_1->d_addr.addr_bytes[2ul] = 69u;
+                  ether_header_1->d_addr.addr_bytes[3ul] = 103u;
+                  ether_header_1->d_addr.addr_bytes[4ul] = 137u;
+                  ether_header_1->d_addr.addr_bytes[5ul] = 1u;
+                  ether_header_1->s_addr.addr_bytes[0ul] = 0u;
+                  ether_header_1->s_addr.addr_bytes[1ul] = 0u;
+                  ether_header_1->s_addr.addr_bytes[2ul] = 0u;
+                  ether_header_1->s_addr.addr_bytes[3ul] = 0u;
+                  ether_header_1->s_addr.addr_bytes[4ul] = 0u;
+                  ether_header_1->s_addr.addr_bytes[5ul] = 0u;
                   return 1;
                 } // !(false == (10000000000ul < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul))))
 
               }
 
-              // 145
+              // 143
               else {
-                vector_return(vector_2, map_value_out_1, vector_value_out);
+                vector_return(vector_3, map_value_out_1, vector_value_out);
+                ether_header_1->d_addr.addr_bytes[0ul] = 1u;
+                ether_header_1->d_addr.addr_bytes[1ul] = 35u;
+                ether_header_1->d_addr.addr_bytes[2ul] = 69u;
+                ether_header_1->d_addr.addr_bytes[3ul] = 103u;
+                ether_header_1->d_addr.addr_bytes[4ul] = 137u;
+                ether_header_1->d_addr.addr_bytes[5ul] = 1u;
+                ether_header_1->s_addr.addr_bytes[0ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[1ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[2ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[3ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[4ul] = 0u;
+                ether_header_1->s_addr.addr_bytes[5ul] = 0u;
                 return 1;
               } // !((now - vector_value_out[8ul]) < 10000000000ul)
 
-            } // !(0u == map_has_this_key__104)
+            } // !(0u == map_has_this_key__102)
 
-          } // !(false == ((out_of_space__54) & (0u == number_of_freed_flows__24)))
+          } // !(false == ((out_of_space__51) & (0u == number_of_freed_flows__27)))
 
         }
 
-        // 161
-        // 165
-        // 175
-        // 180
-        // 185
-        // 190
+        // 158
+        // 162
+        // 172
+        // 177
+        // 182
+        // 187
         else {
           dchain_rejuvenate_index(dchain, map_value_out, now);
-          int checksum__147 = rte_ipv4_udptcp_cksum(ipv4_header_1, tcpudp_header_1);
-          int number_of_freed_flows__148 = expire_items_single_map(dchain_1, vector_1, map_1, now - 10000000000ul);
+          int number_of_freed_flows__145 = expire_items_single_map(dchain_1, vector_2, map_1, now - 10000000000ul);
           uint8_t map_key_1[4];
           map_key_1[0u] = ipv4_header_1->dst_addr & 0xff;
           map_key_1[1u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
           map_key_1[2u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
           map_key_1[3u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
           int map_value_out_1;
-          int map_has_this_key__149 = map_get(map_1, &map_key_1, &map_value_out_1);
+          int map_has_this_key__146 = map_get(map_1, &map_key_1, &map_value_out_1);
 
-          // 161
-          // 165
-          if (0u == map_has_this_key__149) {
-            uint32_t new_index__151;
-            int out_of_space__151 = !dchain_allocate_new_index(dchain_1, &new_index__151, now);
+          // 158
+          // 162
+          if (0u == map_has_this_key__146) {
+            uint32_t new_index__148;
+            int out_of_space__148 = !dchain_allocate_new_index(dchain_1, &new_index__148, now);
 
-            // 161
-            if (false == ((out_of_space__151) & (0u == number_of_freed_flows__148))) {
+            // 158
+            if (false == ((out_of_space__148) & (0u == number_of_freed_flows__145))) {
               uint8_t* vector_value_out = 0u;
-              vector_borrow(vector_1, new_index__151, (void**)(&vector_value_out));
+              vector_borrow(vector_2, new_index__148, (void**)(&vector_value_out));
               vector_value_out[0u] = ipv4_header_1->dst_addr & 0xff;
               vector_value_out[1u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
               vector_value_out[2u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
               vector_value_out[3u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
               uint8_t* vector_value_out_1 = 0u;
-              vector_borrow(vector_2, new_index__151, (void**)(&vector_value_out_1));
+              vector_borrow(vector_3, new_index__148, (void**)(&vector_value_out_1));
               vector_value_out_1[0u] = 10000000000ul - packet_length;
               vector_value_out_1[1u] = ((10000000000ul - packet_length) >> 8ul) & 0xff;
               vector_value_out_1[2u] = ((10000000000ul - packet_length) >> 16ul) & 0xff;
@@ -2032,12 +2102,9 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
               vector_value_out_1[13u] = (now >> 40) & 0xff;
               vector_value_out_1[14u] = (now >> 48) & 0xff;
               vector_value_out_1[15u] = (now >> 56) & 0xff;
-              map_put(map_1, vector_value_out, new_index__151);
-              vector_return(vector_1, new_index__151, vector_value_out);
-              vector_return(vector_2, new_index__151, vector_value_out_1);
-              tcpudp_header_1->src_port = map_value_out & 0xffff;
-              ipv4_header_1->hdr_checksum = checksum__147 & 0xffff;
-              ipv4_header_1->src_addr = 117440522u;
+              map_put(map_1, vector_value_out, new_index__148);
+              vector_return(vector_2, new_index__148, vector_value_out);
+              vector_return(vector_3, new_index__148, vector_value_out_1);
               ether_header_1->d_addr.addr_bytes[0ul] = 1u;
               ether_header_1->d_addr.addr_bytes[1ul] = 35u;
               ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -2053,11 +2120,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
               return 1;
             }
 
-            // 165
+            // 162
             else {
-              tcpudp_header_1->src_port = map_value_out & 0xffff;
-              ipv4_header_1->hdr_checksum = checksum__147 & 0xffff;
-              ipv4_header_1->src_addr = 117440522u;
               ether_header_1->d_addr.addr_bytes[0ul] = 1u;
               ether_header_1->d_addr.addr_bytes[1ul] = 35u;
               ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -2070,20 +2134,19 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
               ether_header_1->s_addr.addr_bytes[3ul] = 0u;
               ether_header_1->s_addr.addr_bytes[4ul] = 0u;
               ether_header_1->s_addr.addr_bytes[5ul] = 0u;
-              // dropping
-              return device;
-            } // !(false == ((out_of_space__151) & (0u == number_of_freed_flows__148)))
+              return 1;
+            } // !(false == ((out_of_space__148) & (0u == number_of_freed_flows__145)))
 
           }
 
-          // 175
-          // 180
-          // 185
-          // 190
+          // 172
+          // 177
+          // 182
+          // 187
           else {
             dchain_rejuvenate_index(dchain_1, map_value_out_1, now);
             uint8_t* vector_value_out = 0u;
-            vector_borrow(vector_2, map_value_out_1, (void**)(&vector_value_out));
+            vector_borrow(vector_3, map_value_out_1, (void**)(&vector_value_out));
             vector_value_out[0u] = 10000000000ul - packet_length;
             vector_value_out[1u] = ((10000000000ul - packet_length) >> 8ul) & 0xff;
             vector_value_out[2u] = ((10000000000ul - packet_length) >> 16ul) & 0xff;
@@ -2101,21 +2164,18 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
             vector_value_out[14u] = (now >> 48) & 0xff;
             vector_value_out[15u] = (now >> 56) & 0xff;
 
-            // 175
-            // 180
-            // 185
+            // 172
+            // 177
+            // 182
             if ((now - vector_value_out[8ul]) < 10000000000ul) {
 
-              // 175
-              // 180
+              // 172
+              // 177
               if (false == (10000000000ul < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul)))) {
 
-                // 175
+                // 172
                 if (false == (packet_length < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul)))) {
-                  vector_return(vector_2, map_value_out_1, vector_value_out);
-                  tcpudp_header_1->src_port = map_value_out & 0xffff;
-                  ipv4_header_1->hdr_checksum = checksum__147 & 0xffff;
-                  ipv4_header_1->src_addr = 117440522u;
+                  vector_return(vector_3, map_value_out_1, vector_value_out);
                   ether_header_1->d_addr.addr_bytes[0ul] = 1u;
                   ether_header_1->d_addr.addr_bytes[1ul] = 35u;
                   ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -2128,16 +2188,12 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                   ether_header_1->s_addr.addr_bytes[3ul] = 0u;
                   ether_header_1->s_addr.addr_bytes[4ul] = 0u;
                   ether_header_1->s_addr.addr_bytes[5ul] = 0u;
-                  // dropping
-                  return device;
+                  return 1;
                 }
 
-                // 180
+                // 177
                 else {
-                  vector_return(vector_2, map_value_out_1, vector_value_out);
-                  tcpudp_header_1->src_port = map_value_out & 0xffff;
-                  ipv4_header_1->hdr_checksum = checksum__147 & 0xffff;
-                  ipv4_header_1->src_addr = 117440522u;
+                  vector_return(vector_3, map_value_out_1, vector_value_out);
                   ether_header_1->d_addr.addr_bytes[0ul] = 1u;
                   ether_header_1->d_addr.addr_bytes[1ul] = 35u;
                   ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -2155,12 +2211,9 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
 
               }
 
-              // 185
+              // 182
               else {
-                vector_return(vector_2, map_value_out_1, vector_value_out);
-                tcpudp_header_1->src_port = map_value_out & 0xffff;
-                ipv4_header_1->hdr_checksum = checksum__147 & 0xffff;
-                ipv4_header_1->src_addr = 117440522u;
+                vector_return(vector_3, map_value_out_1, vector_value_out);
                 ether_header_1->d_addr.addr_bytes[0ul] = 1u;
                 ether_header_1->d_addr.addr_bytes[1ul] = 35u;
                 ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -2178,12 +2231,9 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
 
             }
 
-            // 190
+            // 187
             else {
-              vector_return(vector_2, map_value_out_1, vector_value_out);
-              tcpudp_header_1->src_port = map_value_out & 0xffff;
-              ipv4_header_1->hdr_checksum = checksum__147 & 0xffff;
-              ipv4_header_1->src_addr = 117440522u;
+              vector_return(vector_3, map_value_out_1, vector_value_out);
               ether_header_1->d_addr.addr_bytes[0ul] = 1u;
               ether_header_1->d_addr.addr_bytes[1ul] = 35u;
               ether_header_1->d_addr.addr_bytes[2ul] = 69u;
@@ -2199,35 +2249,36 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
               return 1;
             } // !((now - vector_value_out[8ul]) < 10000000000ul)
 
-          } // !(0u == map_has_this_key__149)
+          } // !(0u == map_has_this_key__146)
 
-        } // !(0u == map_has_this_key__52)
+        } // !(0u == map_has_this_key__49)
 
       } // !device
 
     }
 
-    // 195
+    // 192
+    // 204
     // 207
-    // 210
-    // 219
-    // 223
-    // 227
-    // 231
+    // 216
+    // 220
+    // 224
+    // 228
     else {
-      int number_of_freed_flows__191 = expire_items_single_map(dchain_1, vector_1, map_1, now - 10000000000ul);
+      int number_of_freed_flows__188 = expire_items_single_map(dchain_1, vector_2, map_1, now - 10000000000ul);
 
-      // 195
+      // 192
       if (device) {
-        return 0;
+        // dropping
+        return device;
       }
 
+      // 204
       // 207
-      // 210
-      // 219
-      // 223
-      // 227
-      // 231
+      // 216
+      // 220
+      // 224
+      // 228
       else {
         uint8_t map_key[4];
         map_key[0u] = ipv4_header_1->dst_addr & 0xff;
@@ -2235,24 +2286,24 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
         map_key[2u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
         map_key[3u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
         int map_value_out;
-        int map_has_this_key__196 = map_get(map_1, &map_key, &map_value_out);
+        int map_has_this_key__193 = map_get(map_1, &map_key, &map_value_out);
 
+        // 204
         // 207
-        // 210
-        if (0u == map_has_this_key__196) {
-          uint32_t new_index__198;
-          int out_of_space__198 = !dchain_allocate_new_index(dchain_1, &new_index__198, now);
+        if (0u == map_has_this_key__193) {
+          uint32_t new_index__195;
+          int out_of_space__195 = !dchain_allocate_new_index(dchain_1, &new_index__195, now);
 
-          // 207
-          if (false == ((out_of_space__198) & (0u == number_of_freed_flows__191))) {
+          // 204
+          if (false == ((out_of_space__195) & (0u == number_of_freed_flows__188))) {
             uint8_t* vector_value_out = 0u;
-            vector_borrow(vector_1, new_index__198, (void**)(&vector_value_out));
+            vector_borrow(vector_2, new_index__195, (void**)(&vector_value_out));
             vector_value_out[0u] = ipv4_header_1->dst_addr & 0xff;
             vector_value_out[1u] = (ipv4_header_1->dst_addr >> 8) & 0xff;
             vector_value_out[2u] = (ipv4_header_1->dst_addr >> 16) & 0xff;
             vector_value_out[3u] = (ipv4_header_1->dst_addr >> 24) & 0xff;
             uint8_t* vector_value_out_1 = 0u;
-            vector_borrow(vector_2, new_index__198, (void**)(&vector_value_out_1));
+            vector_borrow(vector_3, new_index__195, (void**)(&vector_value_out_1));
             vector_value_out_1[0u] = 10000000000ul - packet_length;
             vector_value_out_1[1u] = ((10000000000ul - packet_length) >> 8ul) & 0xff;
             vector_value_out_1[2u] = ((10000000000ul - packet_length) >> 16ul) & 0xff;
@@ -2269,28 +2320,29 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
             vector_value_out_1[13u] = (now >> 40) & 0xff;
             vector_value_out_1[14u] = (now >> 48) & 0xff;
             vector_value_out_1[15u] = (now >> 56) & 0xff;
-            map_put(map_1, vector_value_out, new_index__198);
-            vector_return(vector_1, new_index__198, vector_value_out);
-            vector_return(vector_2, new_index__198, vector_value_out_1);
-            return 1;
+            map_put(map_1, vector_value_out, new_index__195);
+            vector_return(vector_2, new_index__195, vector_value_out);
+            vector_return(vector_3, new_index__195, vector_value_out_1);
+            // dropping
+            return device;
           }
 
-          // 210
+          // 207
           else {
             // dropping
             return device;
-          } // !(false == ((out_of_space__198) & (0u == number_of_freed_flows__191)))
+          } // !(false == ((out_of_space__195) & (0u == number_of_freed_flows__188)))
 
         }
 
-        // 219
-        // 223
-        // 227
-        // 231
+        // 216
+        // 220
+        // 224
+        // 228
         else {
           dchain_rejuvenate_index(dchain_1, map_value_out, now);
           uint8_t* vector_value_out = 0u;
-          vector_borrow(vector_2, map_value_out, (void**)(&vector_value_out));
+          vector_borrow(vector_3, map_value_out, (void**)(&vector_value_out));
           vector_value_out[0u] = 10000000000ul - packet_length;
           vector_value_out[1u] = ((10000000000ul - packet_length) >> 8ul) & 0xff;
           vector_value_out[2u] = ((10000000000ul - packet_length) >> 16ul) & 0xff;
@@ -2308,45 +2360,48 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
           vector_value_out[14u] = (now >> 48) & 0xff;
           vector_value_out[15u] = (now >> 56) & 0xff;
 
-          // 219
-          // 223
-          // 227
+          // 216
+          // 220
+          // 224
           if ((now - vector_value_out[8ul]) < 10000000000ul) {
 
-            // 219
-            // 223
+            // 216
+            // 220
             if (false == (10000000000ul < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul)))) {
 
-              // 219
+              // 216
               if (false == (packet_length < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul)))) {
-                vector_return(vector_2, map_value_out, vector_value_out);
+                vector_return(vector_3, map_value_out, vector_value_out);
                 // dropping
                 return device;
               }
 
-              // 223
+              // 220
               else {
-                vector_return(vector_2, map_value_out, vector_value_out);
-                return 1;
+                vector_return(vector_3, map_value_out, vector_value_out);
+                // dropping
+                return device;
               } // !(false == (packet_length < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul))))
 
             }
 
-            // 227
+            // 224
             else {
-              vector_return(vector_2, map_value_out, vector_value_out);
-              return 1;
+              vector_return(vector_3, map_value_out, vector_value_out);
+              // dropping
+              return device;
             } // !(false == (10000000000ul < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul))))
 
           }
 
-          // 231
+          // 228
           else {
-            vector_return(vector_2, map_value_out, vector_value_out);
-            return 1;
+            vector_return(vector_3, map_value_out, vector_value_out);
+            // dropping
+            return device;
           } // !((now - vector_value_out[8ul]) < 10000000000ul)
 
-        } // !(0u == map_has_this_key__196)
+        } // !(0u == map_has_this_key__193)
 
       } // !device
 
@@ -2354,7 +2409,7 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
 
   }
 
-  // 233
+  // 230
   else {
     // dropping
     return device;

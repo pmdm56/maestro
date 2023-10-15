@@ -213,7 +213,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
           // 46
           else {
             int number_of_freed_flows__42 = expire_items_single_map(dchain_1, vector_1, map_1, now - 10000000000ul);
-            return 0;
+            // dropping
+            return device;
           } // !(0u == (((vector_value_out[8ul] != ipv4_header_1->src_addr) | (vector_value_out[2ul] != tcpudp_header_1->src_port)) | (vector_value_out[14ul] != ipv4_header_1->next_proto_id)))
 
         }
@@ -221,7 +222,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
         // 51
         else {
           int number_of_freed_flows__47 = expire_items_single_map(dchain_1, vector_1, map_1, now - 10000000000ul);
-          return 0;
+          // dropping
+          return device;
         } // !dchain_is_index_allocated__31
 
       }
@@ -387,8 +389,7 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                 ether_header_1->s_addr.addr_bytes[3ul] = 0u;
                 ether_header_1->s_addr.addr_bytes[4ul] = 0u;
                 ether_header_1->s_addr.addr_bytes[5ul] = 0u;
-                // dropping
-                return device;
+                return 1;
               } // !(false == ((out_of_space__63) & (0u == number_of_freed_flows__60)))
 
             }
@@ -445,8 +446,7 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                     ether_header_1->s_addr.addr_bytes[3ul] = 0u;
                     ether_header_1->s_addr.addr_bytes[4ul] = 0u;
                     ether_header_1->s_addr.addr_bytes[5ul] = 0u;
-                    // dropping
-                    return device;
+                    return 1;
                   }
 
                   // 92
@@ -571,7 +571,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                 map_put(map_1, vector_value_out, new_index__106);
                 vector_return(vector_1, new_index__106, vector_value_out);
                 vector_return(vector_2, new_index__106, vector_value_out_1);
-                return 1;
+                // dropping
+                return device;
               }
 
               // 120
@@ -626,7 +627,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                   // 135
                   else {
                     vector_return(vector_2, map_value_out_1, vector_value_out);
-                    return 1;
+                    // dropping
+                    return device;
                   } // !(false == (packet_length < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul))))
 
                 }
@@ -634,7 +636,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                 // 140
                 else {
                   vector_return(vector_2, map_value_out_1, vector_value_out);
-                  return 1;
+                  // dropping
+                  return device;
                 } // !(false == (10000000000ul < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul))))
 
               }
@@ -642,7 +645,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
               // 145
               else {
                 vector_return(vector_2, map_value_out_1, vector_value_out);
-                return 1;
+                // dropping
+                return device;
               } // !((now - vector_value_out[8ul]) < 10000000000ul)
 
             } // !(0u == map_has_this_key__104)
@@ -739,8 +743,7 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
               ether_header_1->s_addr.addr_bytes[3ul] = 0u;
               ether_header_1->s_addr.addr_bytes[4ul] = 0u;
               ether_header_1->s_addr.addr_bytes[5ul] = 0u;
-              // dropping
-              return device;
+              return 1;
             } // !(false == ((out_of_space__151) & (0u == number_of_freed_flows__148)))
 
           }
@@ -797,8 +800,7 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
                   ether_header_1->s_addr.addr_bytes[3ul] = 0u;
                   ether_header_1->s_addr.addr_bytes[4ul] = 0u;
                   ether_header_1->s_addr.addr_bytes[5ul] = 0u;
-                  // dropping
-                  return device;
+                  return 1;
                 }
 
                 // 180
@@ -888,7 +890,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
 
       // 195
       if (device) {
-        return 0;
+        // dropping
+        return device;
       }
 
       // 207
@@ -941,7 +944,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
             map_put(map_1, vector_value_out, new_index__198);
             vector_return(vector_1, new_index__198, vector_value_out);
             vector_return(vector_2, new_index__198, vector_value_out_1);
-            return 1;
+            // dropping
+            return device;
           }
 
           // 210
@@ -996,7 +1000,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
               // 223
               else {
                 vector_return(vector_2, map_value_out, vector_value_out);
-                return 1;
+                // dropping
+                return device;
               } // !(false == (packet_length < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul))))
 
             }
@@ -1004,7 +1009,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
             // 227
             else {
               vector_return(vector_2, map_value_out, vector_value_out);
-              return 1;
+              // dropping
+              return device;
             } // !(false == (10000000000ul < (vector_value_out[0ul] + ((1000000000ul * (now - vector_value_out[8ul])) / 1000000000ul))))
 
           }
@@ -1012,7 +1018,8 @@ int nf_process(uint16_t device, uint8_t* packet, uint16_t packet_length, int64_t
           // 231
           else {
             vector_return(vector_2, map_value_out, vector_value_out);
-            return 1;
+            // dropping
+            return device;
           } // !((now - vector_value_out[8ul]) < 10000000000ul)
 
         } // !(0u == map_has_this_key__196)
