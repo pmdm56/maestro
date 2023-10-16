@@ -118,7 +118,7 @@ int nf_process(uint16_t device, uint8_t **buffer, uint16_t packet_length,
   }
 
   // conflict resolution
-  uint16_t dst_device = dst_device_nat AND dst_device_pol;
+  uint16_t dst_device = dst_device_nat | dst_device_pol;
 
   if (dst_device != device) {
     rte_ether_header->s_addr = config.device_macs[dst_device];

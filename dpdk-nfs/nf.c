@@ -24,7 +24,7 @@
 
 // Unverified support for batching, useful for performance comparisons
 #ifndef VIGOR_BATCH_SIZE
-#define VIGOR_BATCH_SIZE 1
+#define VIGOR_BATCH_SIZE 32
 #endif
 
 // More elaborate loop shape with annotations for verification
