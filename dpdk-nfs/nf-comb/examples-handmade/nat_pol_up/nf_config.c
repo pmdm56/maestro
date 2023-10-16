@@ -147,35 +147,35 @@ void nf_config_init(int argc, char **argv) {
 }
 
 void nf_config_usage(void) {
-  //NF_INFO(
-      "Usage:\n"
-      "[DPDK EAL options] --\n"
-      "\t--lan <device>: LAN device,"
-      " default: %" PRIu16 ".\n"
-      "\t--wan <device>: WAN device,"
-      " default: %" PRIu16 ".\n"
-      "\t--rate <rate>: policer rate in bytes/s,"
-      " default: %" PRIu64 ".\n"
-      "\t--burst <size>: policer burst size in bytes,"
-      " default: %" PRIu64 ".\n"
-      "\t--capacity <n>: policer table capacity,"
-      " default: %" PRIu32 ".\n",
-      "\t--eth-dest <device>,<mac>: MAC address of the endpoint linked to "
-      "a device.\n"
-      "\t--expire <time>: flow expiration time (us).\n"
-      "\t--extip <ip>: external IP address.\n"
-      "\t--lan-dev <device>: set device to be the main LAN device (for "
-      "non-NAT).\n"
-      "\t--max-flows <n>: flow table capacity.\n"
-      "\t--starting-port <n>: start of the port range for external ports.\n",
-      DEFAULT_LAN, DEFAULT_WAN, DEFAULT_RATE, DEFAULT_BURST, DEFAULT_CAPACITY);
+  // //NF_INFO(
+  //     "Usage:\n"
+  //     "[DPDK EAL options] --\n"
+  //     "\t--lan <device>: LAN device,"
+  //     " default: %" PRIu16 ".\n"
+  //     "\t--wan <device>: WAN device,"
+  //     " default: %" PRIu16 ".\n"
+  //     "\t--rate <rate>: policer rate in bytes/s,"
+  //     " default: %" PRIu64 ".\n"
+  //     "\t--burst <size>: policer burst size in bytes,"
+  //     " default: %" PRIu64 ".\n"
+  //     "\t--capacity <n>: policer table capacity,"
+  //     " default: %" PRIu32 ".\n",
+  //     "\t--eth-dest <device>,<mac>: MAC address of the endpoint linked to "
+  //     "a device.\n"
+  //     "\t--expire <time>: flow expiration time (us).\n"
+  //     "\t--extip <ip>: external IP address.\n"
+  //     "\t--lan-dev <device>: set device to be the main LAN device (for "
+  //     "non-NAT).\n"
+  //     "\t--max-flows <n>: flow table capacity.\n"
+  //     "\t--starting-port <n>: start of the port range for external ports.\n",
+  //     DEFAULT_LAN, DEFAULT_WAN, DEFAULT_RATE, DEFAULT_BURST, DEFAULT_CAPACITY);
 }
 
 void nf_config_print(void) {
   //NF_INFO("\n--- NAT_POL Config ---\n");
 
   //NF_INFO("Main LAN device (only relevant for NOP): %" PRIu16,
-          config.lan_main_device);
+          // config.lan_main_device);
   //NF_INFO("LAN Device: %" PRIu16, config.lan_device);
   //NF_INFO("WAN Device: %" PRIu16, config.wan_device);
   //NF_INFO("Rate: %" PRIu64, config.rate);
@@ -191,8 +191,8 @@ void nf_config_print(void) {
     char *dev_mac_str = nf_mac_to_str(&(config.device_macs[dev]));
     char *end_mac_str = nf_mac_to_str(&(config.endpoint_macs[dev]));
 
-    //NF_INFO("Device %" PRIu16 " own-mac: %s, end-mac: %s", dev, dev_mac_str,
-            end_mac_str);
+    // //NF_INFO("Device %" PRIu16 " own-mac: %s, end-mac: %s", dev, dev_mac_str,
+    //         end_mac_str);
 
     free(dev_mac_str);
     free(end_mac_str);

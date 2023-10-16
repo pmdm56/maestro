@@ -126,24 +126,24 @@ void nf_config_init(int argc, char **argv) {
 }
 
 void nf_config_usage(void) {
-  //NF_INFO("Usage:\n"
-          "[DPDK EAL options] --\n"
-          "\t--lan <device>: LAN device,"
-          " default: %" PRIu16 ".\n"
-          "\t--wan <device>: WAN device,"
-          " default: %" PRIu16 ".\n"
-          "\t--rate <rate>: policer rate in bytes/s,"
-          " default: %" PRIu64 ".\n"
-          "\t--burst <size>: policer burst size in bytes,"
-          " default: %" PRIu64 ".\n"
-          "\t--capacity <n>: policer table capacity,"
-          " default: %" PRIu32 ".\n",
-          "\t--eth-dest <device>,<mac>: MAC address of the endpoint linked to "
-          "a device.\n"
-          "\t--expire <time>: flow expiration time (us).\n"
-          "\t--max-flows <n>: flow table capacity.\n",
-          DEFAULT_LAN, DEFAULT_WAN, DEFAULT_RATE, DEFAULT_BURST,
-          DEFAULT_CAPACITY);
+  // //NF_INFO("Usage:\n"
+  //         "[DPDK EAL options] --\n"
+  //         "\t--lan <device>: LAN device,"
+  //         " default: %" PRIu16 ".\n"
+  //         "\t--wan <device>: WAN device,"
+  //         " default: %" PRIu16 ".\n"
+  //         "\t--rate <rate>: policer rate in bytes/s,"
+  //         " default: %" PRIu64 ".\n"
+  //         "\t--burst <size>: policer burst size in bytes,"
+  //         " default: %" PRIu64 ".\n"
+  //         "\t--capacity <n>: policer table capacity,"
+  //         " default: %" PRIu32 ".\n",
+  //         "\t--eth-dest <device>,<mac>: MAC address of the endpoint linked to "
+  //         "a device.\n"
+  //         "\t--expire <time>: flow expiration time (us).\n"
+  //         "\t--max-flows <n>: flow table capacity.\n",
+  //         DEFAULT_LAN, DEFAULT_WAN, DEFAULT_RATE, DEFAULT_BURST,
+  //         DEFAULT_CAPACITY);
 }
 
 void nf_config_print(void) {
@@ -160,8 +160,8 @@ void nf_config_print(void) {
     char *dev_mac_str = nf_mac_to_str(&(config.device_macs[dev]));
     char *end_mac_str = nf_mac_to_str(&(config.endpoint_macs[dev]));
 
-    //NF_INFO("Device %" PRIu16 " own-mac: %s, end-mac: %s", dev, dev_mac_str,
-            end_mac_str);
+    // //NF_INFO("Device %" PRIu16 " own-mac: %s, end-mac: %s", dev, dev_mac_str,
+    //         end_mac_str);
 
     free(dev_mac_str);
     free(end_mac_str);
