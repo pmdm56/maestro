@@ -126,7 +126,7 @@ void nf_config_init(int argc, char **argv) {
 }
 
 void nf_config_usage(void) {
-  NF_INFO("Usage:\n"
+  //NF_INFO("Usage:\n"
           "[DPDK EAL options] --\n"
           "\t--lan <device>: LAN device,"
           " default: %" PRIu16 ".\n"
@@ -147,28 +147,28 @@ void nf_config_usage(void) {
 }
 
 void nf_config_print(void) {
-  NF_INFO("\n--- FW_POL Config ---\n");
+  //NF_INFO("\n--- FW_POL Config ---\n");
 
-  NF_INFO("LAN Device: %" PRIu16, config.lan_device);
-  NF_INFO("WAN Device: %" PRIu16, config.wan_device);
-  NF_INFO("Rate: %" PRIu64, config.rate);
-  NF_INFO("Burst: %" PRIu64, config.burst);
-  NF_INFO("Capacity: %" PRIu16, config.dyn_capacity);
+  //NF_INFO("LAN Device: %" PRIu16, config.lan_device);
+  //NF_INFO("WAN Device: %" PRIu16, config.wan_device);
+  //NF_INFO("Rate: %" PRIu64, config.rate);
+  //NF_INFO("Burst: %" PRIu64, config.burst);
+  //NF_INFO("Capacity: %" PRIu16, config.dyn_capacity);
 
   uint16_t nb_devices = rte_eth_dev_count_avail();
   for (uint16_t dev = 0; dev < nb_devices; dev++) {
     char *dev_mac_str = nf_mac_to_str(&(config.device_macs[dev]));
     char *end_mac_str = nf_mac_to_str(&(config.endpoint_macs[dev]));
 
-    NF_INFO("Device %" PRIu16 " own-mac: %s, end-mac: %s", dev, dev_mac_str,
+    //NF_INFO("Device %" PRIu16 " own-mac: %s, end-mac: %s", dev, dev_mac_str,
             end_mac_str);
 
     free(dev_mac_str);
     free(end_mac_str);
   }
 
-  NF_INFO("Expiration time: %" PRIu32 "us", config.expiration_time);
-  NF_INFO("Max flows: %" PRIu32, config.max_flows);
+  //NF_INFO("Expiration time: %" PRIu32 "us", config.expiration_time);
+  //NF_INFO("Max flows: %" PRIu32, config.max_flows);
 
-  NF_INFO("\n--- ------ ------ ---\n");
+  //NF_INFO("\n--- ------ ------ ---\n");
 }

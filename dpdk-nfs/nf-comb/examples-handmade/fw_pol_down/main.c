@@ -22,30 +22,30 @@ bool nf_init(void) {
 int nf_process(uint16_t device, uint8_t **buffer, uint16_t packet_length,
                vigor_time_t now, struct rte_mbuf *mbuf) {
 
-  NF_INFO("It is %" PRId64, now);
+  // //NF_INFO("It is %" PRId64, now);
 
   flow_manager_expire(flow_manager, now);
-  NF_INFO("Flows have been expired");
+  // //NF_INFO("Flows have been expired");
 
   struct rte_ether_hdr *rte_ether_header = nf_then_get_rte_ether_header(buffer);
   struct rte_ipv4_hdr *rte_ipv4_header =
       nf_then_get_rte_ipv4_header(rte_ether_header, buffer);
 
   if (rte_ipv4_header == NULL) {
-    NF_INFO("Not IPv4, dropping");
+    // //NF_INFO("Not IPv4, dropping");
     return device;
   }
 
   struct tcpudp_hdr *tcpudp_header =
       nf_then_get_tcpudp_header(rte_ipv4_header, buffer);
   if (tcpudp_header == NULL) {
-    NF_INFO("Not TCP/UDP, dropping");
+    // //NF_INFO("Not TCP/UDP, dropping");
     return device;
   }
 
   policer_expire_entries(now, dynamic_ft);
 
-  NF_INFO("Forwarding an IPv4 packet on device %" PRIu16, device);
+  ////NF_INFO("Forwarding an IPv4 packet on device %" PRIu16, device);
 
   uint16_t dst_device_fw;
   uint16_t dst_device_pol;
@@ -67,7 +67,7 @@ int nf_process(uint16_t device, uint8_t **buffer, uint16_t packet_length,
     uint32_t dst_device_long;
     if (!flow_manager_get_refresh_flow(flow_manager, &id, now,
                                        &dst_device_long)) {
-      NF_INFO("-- Unknown external flow, dropping");
+      // //NF_INFO("-- Unknown external flow, dropping");
       dst_device_fw = device;
     } else
       dst_device_fw = dst_device_long;
@@ -80,7 +80,7 @@ int nf_process(uint16_t device, uint8_t **buffer, uint16_t packet_length,
   } else {
 
     // Policer Simply forward outgoing packets.
-    NF_INFO("-- Outgoing packet. Not policing.");
+    ////NF_INFO("-- Outgoing packet. Not policing.");
 
     struct FlowId id = {
       .src_port = tcpudp_header->src_port,
@@ -107,9 +107,9 @@ int nf_process(uint16_t device, uint8_t **buffer, uint16_t packet_length,
     rte_ether_header->d_addr = config.endpoint_macs[dst_device];
   }
 
-  NF_INFO("-- Fw choice: %" PRIu16, dst_device_fw);
-  NF_INFO("-- Pol choice: %" PRIu16, dst_device_pol);
-  NF_INFO("-- Sending it to  %" PRIu16, dst_device);
+  // //NF_INFO("-- Fw choice: %" PRIu16, dst_device_fw);
+  // //NF_INFO("-- Pol choice: %" PRIu16, dst_device_pol);
+  // //NF_INFO("-- Sending it to  %" PRIu16, dst_device);
 
   return dst_device;
 }
