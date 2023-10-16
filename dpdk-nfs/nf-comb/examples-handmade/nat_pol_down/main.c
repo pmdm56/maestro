@@ -56,7 +56,7 @@ int nf_process(uint16_t device, uint8_t **buffer, uint16_t packet_length,
     if (flow_manager_get_external(flow_manager, tcpudp_header->dst_port, now,
                                   &internal_flow)) {
       //NF_INFO("Found internal flow.");
-      LOG_FLOWID(&internal_flow, //NF_INFO);
+      //LOG_FLOWID(&internal_flow, //NF_INFO);
 
       if (internal_flow.dst_ip != rte_ipv4_header->src_addr |
           internal_flow.dst_port != tcpudp_header->src_port |
@@ -91,10 +91,10 @@ int nf_process(uint16_t device, uint8_t **buffer, uint16_t packet_length,
     
 
     //NF_INFO("For id:");
-    LOG_FLOWID(&id, //NF_INFO);
+    //LOG_FLOWID(&id, //NF_INFO);
 
     //NF_INFO("Device %" PRIu16 " is internal (not %" PRIu16 ")", device,
-            config.wan_device);
+     //       config.wan_device);
 
     uint16_t external_port;
     if (!flow_manager_get_internal(flow_manager, &id, now, &external_port) &&

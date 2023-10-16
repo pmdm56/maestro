@@ -9,7 +9,7 @@ NF_ARGS := --lan 1 \
            --max-flows $(or $(CAPACITY),65536) \
            --eth-dest 0,$(or $(TESTER_MAC_EXTERNAL),01:23:45:67:89:00) \
            --eth-dest 1,$(or $(TESTER_MAC_INTERNAL),01:23:45:67:89:01)  \
-           --extip $(or $(MB_IP_EXTERNAL),0.0.0.0) \
+           --extip $(or $(MB_IP_EXTERNAL),10.0.0.10) \
             --starting-port 0 
 NF_LAYER := 4
 
